@@ -1,5 +1,5 @@
 """Write data/raw/MANIFEST.sha256 — a checksum + size + mtime record of every cached
-raw input. Committed; everything else under data/raw/ is not.
+raw input. The manifest and the raw files are both committed.
 
 Run after `python pipeline/run.py raw`. To verify a cache against the committed manifest:
     python pipeline/make_manifest.py --check
