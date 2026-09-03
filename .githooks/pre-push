@@ -1,0 +1,31 @@
+#!/bin/sh
+# Numeric-consistency gate. Enable once per clone:
+#     git config core.hooksPath .githooks
+# The hook file must be executable, or git skips it with only a hint and the push
+# goes through ungated.
+#
+# Recomputes every manuscript number from the raw/derived data and refuses the push
+# on any un-waived mismatch. Orphan-number scanning is report-only until Stage 1 prose
+# settles; flip to blocking then by adding --strict below.
+
+# Prefer the pinned venv, so the gate runs the same library versions that produced the
+# figures. Fall back to whatever python is on PATH: "python" alone does not exist on a
+# stock Linux install, and a missing interpreter would block the push looking like a
+# numeric failure.
+for PY in .venv/bin/python .venv/Scripts/python.exe python3 python; do
+    if command -v "$PY" >/dev/null 2>&1; then break; fi
+    PY=""
+done
+if [ -z "$PY" ]; then
+    echo "pre-push: no python interpreter found; cannot run the numbers gate." >&2
+    echo "create the venv (see README) or push with --no-verify." >&2
+    exit 1
+fi
+
+"$PY" pipeline/run.py verify || {
+    echo
+    echo "pre-push blocked: manuscript numbers disagree with the pipeline."
+    echo "fix the number (or add a dated waiver to Paper A/numbers_waivers.txt),"
+    echo "or push with --no-verify if you understand why."
+    exit 1
+}

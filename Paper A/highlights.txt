@@ -1,0 +1,7 @@
+Research highlights (max 85 characters each, including spaces)
+
+- Office-summed WIPO publications are not invention counts.
+- Office-sum inflation spans 1.05--4.48 across 68 economies (median pair 1.57).
+- High D remains an EPC pattern after controlling for home-office share.
+- Office ** tracks published PCT filings by origin (Spearman +0.991).
+- Family scope shifts China-Singapore from about 500x to about 20x.

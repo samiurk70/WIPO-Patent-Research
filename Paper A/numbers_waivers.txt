@@ -1,0 +1,4 @@
+# Known manuscript/data discrepancies that are acknowledged and scheduled for fix, so the
+# pre-push gate reports them without blocking. Format:  numbers.json-key | reason (date, owner)
+# Clear an entry when the underlying number is fixed in the manuscript.
+

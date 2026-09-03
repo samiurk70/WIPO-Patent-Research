@@ -1,0 +1,22 @@
+# Numeric tokens in Paper A/main.tex that are NOT data claims and need no numbers.json key.
+# One token per line; "re:" prefix = regex matched against the whole token.
+# Keep this list tight — every real data number belongs in numbers.json, not here.
+
+re:(18|19|20)\d{2}      # calendar years (in prose, ranges, citations)
+re:[0-9]                # single digits: section / RQ / figure / table / tier / leak counts
+re:1[0-4]               # 10-14: section refs, "fourteen fields", n=14, "eleven countries", 12pt rules
+
+1212                    # BRAC University postcode, Dhaka (\institute, after \begin{document})
+0.98                    # \includegraphics width fractions
+0.95
+0.9
+0.85
+0.8
+0.62                    # Paper A includegraphics widths (also stripped, kept explicit)
+0.74
+2015                    # (covered by year regex, kept explicit for clarity)
+2030                    # "2030 Agenda"
+256                     # "SHA-256" in the availability statement / Section 3.3
+0.72                    # Paper A Figure A2 width
+95                      # "95 percent interval" - the confidence level, not a data claim
+70                      # GitHub username samiurk70 in the data-availability URL

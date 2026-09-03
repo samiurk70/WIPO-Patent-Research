@@ -1,0 +1,1159 @@
+%% Paper A -- World Patent Information full article.
+%% Double-anonymised review requires a separate title page and a de-identified
+%% manuscript; the author block is retained here for the production version.
+%% cmap must precede fontenc (loaded by cas-dc) so Type-3/pk CM glyphs
+%% copy-paste as Unicode rather than dropping the fi/ff ligature.
+\RequirePackage{cmap}
+\documentclass[a4paper,fleqn]{cas-dc}
+
+\usepackage[numbers]{natbib}
+\usepackage{graphicx,booktabs,url}
+\input{glyphtounicode}
+\pdfgentounicode=1
+
+\graphicspath{{figures/}{../figures/paper_a/}}
+
+\begin{document}
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+
+\shorttitle{How much does the counting unit matter?}
+\shortauthors{Khan and Israq}
+
+\title[mode=title]{How much does the counting unit matter? Cross-country patent
+comparisons and the {WIPO} bulk file}
+
+\author[1]{Samiur Rahman Khan}
+\cormark[1]
+\ead{samiurk70@gmail.com}
+\credit{Conceptualization, Methodology, Software, Data curation, Formal analysis,
+Writing -- original draft}
+\affiliation[1]{organization={Independent Researcher},
+                city={London},
+                country={United Kingdom}}
+
+\author[2]{Haseen Israq}
+\ead{haseen.israq@g.bracu.ac.bd}
+\credit{Validation, Writing -- review and editing}
+\affiliation[2]{organization={BRAC University},
+                addressline={Pragati Sarani},
+                city={Dhaka},
+                postcode={1212},
+                country={Bangladesh}}
+
+\cortext[1]{Corresponding author}
+
+\begin{abstract}
+Open patent bulk files make cross-country comparisons accessible, but their
+rows do not necessarily represent inventions. This article measures how
+summing the World Intellectual Property Organization (WIPO)
+patent-publications-by-technology file across filing offices changes origin
+comparisons. For 68 economies with at least 500 publications in 2018--2022,
+and after separating the office code that behaves as the PCT international
+phase, the office-sum divided by the cell-wise leading office yields a
+duplication factor $D$ from 1.05 to 4.48 (median pairwise ratio 1.57). Where
+the home office leads, $D=1/H$ arithmetically; where it does not, $D$ stays
+far below $1/H$ because foreign filings concentrate in a few large offices.
+The fraction of that identity realised, $D\cdot H$, has median 0.90 across
+58 measurable-home economies. Partial Spearman of $D$ with European Patent
+Convention (EPC) status controlling for $H$ is $+0.413$: the high tail
+remains an EPC pattern after home-office share is held. Over seven non-EPC
+national-route origins the cell-wise leading office is closer to families
+than the office-sum (mean absolute relative error 0.101, or 0.069 excluding
+the year-anchor case, versus 0.803). That recommendation is not validated
+for the EPC structural case. Holding the family unit fixed, geographic scope
+still shifts the China--Singapore comparison from about 500 to about 20.
+\end{abstract}
+
+\begin{highlights}
+\item Office-summed WIPO publications are not invention counts.
+\item Office-sum inflation spans 1.05--4.48 across 68 economies (median pair 1.57).
+\item High D remains an EPC pattern after controlling for home-office share.
+\item Office \texttt{**} tracks published PCT filings by origin (Spearman $+0.991$).
+\item Family scope shifts China--Singapore from about 500x to about 20x.
+\end{highlights}
+
+\begin{keywords}
+patent statistics \sep patent families \sep WIPO \sep counting unit \sep
+PCT \sep cross-country comparison
+\end{keywords}
+
+\maketitle
+
+\section{Introduction}\label{sec:intro}
+
+Patent statistics often enter policy reports and cross-country research as if
+the word ``patent'' named a single, stable unit. It does not. An application, a
+publication, a granted right and a patent family are related records, but they
+answer different questions. This distinction has long been central to the
+measurement literature because patent data are indicators rather than direct
+observations of inventive activity \citep{griliches1990,oecd2009manual}. A
+publication count can describe the documentary output of an office. A
+first-filing or family count can approximate inventions. A count restricted to
+rights sought in several markets can instead indicate an internationally
+oriented subset. None is universally preferable; the appropriate unit follows
+from the construct being measured.
+
+The problem becomes acute when an analyst works from an aggregate bulk file.
+Such files are attractive precisely because they remove many of the barriers
+to patent analysis: they are open, compact and already classified by country,
+year and technology. Their convenience, however, can hide the joins and
+counting rules that would be visible in document-level data. If a table has one
+cell for each applicant origin and filing office, summing its office column is
+easy. Interpreting that sum as a count of inventions is not. Related
+publications protecting one invention can be present at several offices, so
+the sum measures publication-to-office assignments. The same procedure can
+affect origins differently because filing abroad is not equally common in
+every economy.
+
+The WIPO IP Statistics Data Center, and the patent-publications-by-technology
+product in particular, is already used for cross-country work. A national
+intellectual-property office has produced a regional patent landscape from
+this file \citep{ipos2024seasia}. The same Data Center product appears in
+applied studies \citep{akkucuk2016patent,hartmann2021georgia,
+ijirshar2025innovation,ildiakov2025assessing}. Five uses, and none states
+how the office dimension is treated. That is a documented reporting gap, not
+an accusation of error. A companion regional analysis uses the family series
+for a different substantive purpose \citep{khan2026jseae}; no findings from
+that study are required for the measurement presented here.
+
+The established OECD and WIPO counting canon provides the conceptual remedy.
+Patent families group related filings; priority-based indicators move closer
+to the invention than office publication totals; and carefully selected
+international families can improve comparability when domestic institutional
+settings differ \citep{oecd2009manual,martinez2010insight,dernis2004triadic,
+derassenfosse2013worldwide}. International comparison nevertheless remains
+sensitive to attribution, field, year and geographic scope
+\citep{hascic2015comparisons}. This literature explains why a unit must be
+chosen. It does not tell a user how large the origin-specific inflation is in
+the particular open bulk table already on their screen. Comparable source and
+classification choices have been shown to matter in applied patent studies,
+including work in \emph{World Patent Information} that varies counting rules
+in PATSTAT rather than in this bulk file \citep{pasimeni2019assessing}. Here,
+the source architecture itself is the object of study.
+
+This article therefore asks a measurement question: how much does summing the
+WIPO patent-publications-by-technology bulk file across offices inflate an
+origin's count relative to its cell-wise leading office, and does that
+inflation behave like a common multiplier across origins? The issue is not
+whether every multi-office record can be deduplicated from the aggregate file;
+it cannot, because no family identifiers connect the office cells. The issue
+is whether a transparent diagnostic can reveal when an office-summed
+comparison is especially exposed to filing strategy.
+
+The article makes four contributions. First, it defines what the office-sum
+in this WIPO file counts and, equally importantly, what it does not count.
+Second, it measures the duplication factor $D$ against the arithmetic identity
+$D=1/H$, and it reports that the high tail of $D$ remains associated with
+membership of the European Patent Convention (EPC) after home-office share is
+controlled. Third, it shows that origin rankings move under
+equally defensible counting rules and, where family counts overlap, that the
+cell-wise leading office is the closer stand-in for families over the
+seven-economy overlap available here. Fourth, holding the family unit
+constant, it shows that geographic scope---all families versus
+foreign-oriented families---still changes origin comparisons. These
+contributions are respectively conceptual, diagnostic, practical and a
+matter of geographic scope.
+
+The rest of the article follows the sequence required for a measurement
+problem. Section~\ref{sec:units} defines the constructs and the bulk-file
+record. Section~\ref{sec:methods} describes the study design, sample and three
+quantities, including a worked China--Singapore comparison.
+Section~\ref{sec:results} reports the descriptive, residual, rank and
+geographic-scope results.
+Section~\ref{sec:discussion} discusses their use and limits for patent
+information work.
+
+\section{Counting units and the bulk file}\label{sec:units}
+
+\subsection{Families, publications, and office-sums}\label{sec:families}
+
+A patent publication is a document made public by a patent authority at a
+particular procedural stage. It is an observable event in one jurisdiction,
+not a unique invention. The same underlying inventive subject matter may
+generate publications at the applicant's home office, at foreign offices, at
+a regional office and through the international phase of the Patent
+Cooperation Treaty (PCT). Publication statistics are consequently well suited
+to questions about office workload, documentary flows or routes of protection.
+They become problematic only when their unit is silently relabelled.
+
+A patent family, by contrast, is a rule-based grouping of related patent
+documents. Family definitions vary because different grouping rules serve
+different analytical purposes \citep{martinez2010insight}. A simple family may
+group documents connected by a common priority; a broader construction can
+follow more complex priority links. Triadic families deliberately select
+inventions pursued at major offices and are designed for a different
+comparability problem \citep{dernis2004triadic}. The important point here is
+not that ``family'' is a perfect synonym for invention. It is that a family
+definition explicitly groups documents before counting, whereas an office-sum
+does not.
+
+WIPO's family indicators used in this article are first-filing based and
+attributed by applicant origin \citep{wipo2026families}. Indicator 6a covers
+all observed families. Indicator 7 covers families extended to at least one
+foreign office. The latter is not a quality-adjusted version of the former and
+is not used here to declare one economy more inventive than another. It is a
+geographic-scope restriction that selects internationally extended protection.
+Such restrictions are common in patent-quality and international-comparison
+work because filing in additional markets reflects a selection decision as
+well as an opportunity to protect the invention
+\citep{squicciarini2013measuring,frietsch2010transnational,
+dechezlepretre2017families}.
+
+An office-sum is a third object. For an applicant origin and period, it adds
+the publications recorded at each office. If one related set of documents
+appears at several offices, each office contributes to the sum. Without
+document or family links, the analyst cannot tell which cells relate to the
+same invention. The office-sum is therefore neither a simple family nor an
+international-family indicator. It is a measure of publication assignments
+over an office network.
+
+\subsection{The bulk file as an assignment table}\label{sec:assignment}
+
+The source examined here is WIPO's bulk indicator dataset of patent
+publications by publication year, filing office, applicant origin and
+technology field \citep{wipo2025bulk}. Each row represents one combination of
+those dimensions and supplies a count for that combination. The file is thus
+an aggregate assignment table, not a register in which each row is a patent.
+The analysed release contains 663,584 rows for 2000--2022 and 50.2 million
+publication-to-field assignments.
+
+The assignment-table interpretation matters twice. Across offices, one
+invention can contribute publications in several jurisdictions. Across
+technology fields, one publication can contribute to several classified
+fields. The bulk value is therefore best read as a count attached to a
+specific origin--office--year--field cell. Collapsing one dimension does not
+automatically create unique documents along another. This is why a large,
+cleanly formatted total can still lack the construct implied by the label
+``inventions''.
+
+Technology fields follow the Schmoch concordance used for country comparison
+\citep{schmoch2008}. The concordance allocates patent classifications to
+technology fields, and a document associated with several fields can
+contribute to each relevant field. The values in the analysed bulk file are
+integers throughout, consistent with whole counting in this particular table.
+The aggregate 50.2 million should consequently not be interpreted as the
+number of distinct patent documents. For the present study, the technology
+dimension is retained consistently in constructing every office quantity, so
+the concern is not a technology comparison. It is that the table contains
+assignments at more than one level.
+
+This distinction also explains why family counting is not merely a final
+arithmetic step on the bulk file. Deduplication requires links. An aggregate
+cell reports how many assignments share its dimensions, but it does not report
+which assignment in one office corresponds to which assignment elsewhere.
+Document-level databases can construct families from priority relations.
+This bulk file can only support diagnostics that do not pretend those links
+are present.
+
+\subsection{Whole counting and the two \texttt{**} tokens}\label{sec:tokens}
+
+Two identically printed tokens require separate treatment because they occur
+in different columns. In the applicant-origin column, \texttt{**} denotes an
+unrecorded origin. Such rows cannot be assigned to an economy and are excluded
+from origin comparisons. In the filing-office column, \texttt{**} behaves
+differently. It is smaller than the named-office sum within a slice and
+therefore does not behave as a grand-total field. Its volume is 309,728 in
+2020, against WIPO's estimated 275,900 PCT applications filed in 2020
+\citep{wipo2021pct}. The two figures differ for two reasons: publications lag
+applications by about eighteen months, and whole-counted field assignments
+exceed document counts. The distribution of office \texttt{**} is higher for
+origins that make heavier use of international filing.
+
+WIPO's Data Center documentation states that international-phase PCT data are
+available under the PCT route, whereas subsequent national-phase activity is
+reported under patent or utility-model indicators \citep{wipoabout}. In
+combination with the scale and origin pattern of office \texttt{**}, this
+supports treating that office token as the PCT international phase.
+Section~\ref{sec:pct-result} reports a discriminating origin-level rank check
+against published PCT applications by origin. The mapping is nevertheless
+inferential: the documentation available for the Data Center does not
+explicitly define the \texttt{**} value in this bulk file's office column.
+This article therefore says that office \texttt{**} \emph{behaves as} the PCT
+layer. It does not claim that the token's meaning has been directly confirmed
+by a file-specific data dictionary.
+
+Separating the token is necessary for a coherent office-sum. If it were added
+to all named offices, an international-phase publication would be treated as
+another office observation beside later national or regional publications.
+That may be appropriate when studying the use of the PCT route, but not when
+the stated outcome is publications at named patent offices. The origin token
+and office token are therefore removed or separated for different reasons:
+one lacks geographic attribution; the other represents a distinct filing
+layer under the maintained interpretation.
+
+Figure~\ref{fig:schematic} states the counting problem as two illustrative
+filing routes. It is not an average family. The internationally filed route
+returns six, five, one, one and one under the five rules shown; the
+domestic-only route returns one, one, one, one and zero. Inflation is
+therefore a property of the route, not a common multiplier, and indicator 7
+returns zero for a domestic invention rather than a smaller positive number.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.95\textwidth]{figA0_counting_schematic}
+\caption{Two illustrative filing routes, not an average family size. Panel A
+follows a priority filing through a PCT international-phase publication,
+three foreign offices and a regional (EPO) publication. Panel B is a
+home-office publication only. The five counts under each panel are
+office-sum including \texttt{**}, office-sum excluding \texttt{**}, cell-wise
+leading office, all families (indicator 6a) and foreign-oriented families
+(indicator 7): $6/5/1/1/1$ versus $1/1/1/1/0$. The time axis marks priority,
+publication (eighteen months) and national-phase entry (thirty months).
+Source: authors' schematic.}
+\label{fig:schematic}
+\end{figure*}
+
+\section{Materials and methods}\label{sec:methods}
+
+\subsection{Study design and unit of analysis}\label{sec:design}
+
+The study is a descriptive measurement analysis of applicant-origin filing
+profiles. Its unit of comparison is an economy over the 2018--2022 window.
+The design does not estimate causal effects and does not rank national
+innovation systems. Instead, it asks whether the office distribution attached
+to one applicant origin makes an office-summed publication count more or less
+concentrated than the distribution attached to another origin.
+
+The primary calculation begins with origin--year--technology-field cells.
+Named offices are compared within each cell, and the resulting counts are
+aggregated over the study window. Retaining a common cell structure prevents a
+country's technology composition or year mix from being silently collapsed at
+a different stage from another country's. Office \texttt{**} is separated
+before the named-office duplication proxy is calculated. Rows with origin
+\texttt{**} are excluded because they cannot enter an origin-specific result.
+
+Three descriptive quantities are then placed in sequence. The home-office
+share describes how much of an origin's named-office activity is observed at
+its own office. The PCT-layer share describes the relative size of the
+separated \texttt{**} office route. The duplication factor describes how
+dispersed the named-office count is relative to the cell-wise leading office.
+Together they distinguish domestic concentration, use of the inferred PCT
+route and multi-office dispersion. None directly observes family links.
+
+\subsection{Data sources and pin}\label{sec:sources}
+
+Publication counts come from the WIPO patent-publications-by-technology bulk
+file, retrieved 30 July 2026 \citep{wipo2025bulk}. The cached input is pinned
+in the project manifest by SHA-256 so that the analysed release can be
+distinguished from later updates. The retrieval, transformation and figure
+scripts preserve the source file and generate the derived origin-level table.
+This pin is important for a live statistical service: a retrieval date alone
+identifies when access occurred, whereas the checksum identifies the exact
+bytes analysed.
+
+Family counts come from a documented manual export of WIPO Data Center
+indicators 6a and 7, total count by applicant's origin
+\citep{wipo2026families}. The Data Center recorded a database update in May
+2026, and the export was retrieved 2 September 2026. The export route is
+manual because the family series is exposed through the Data Center interface
+rather than the publication bulk download. As a provenance check, the saved
+series reproduces, within source rounding, the China and Japan values printed
+for the same indicators in \emph{World Intellectual Property Indicators 2024}
+\citep{wipo2024wipi}.
+
+The two data products are not merged record by record. The publication file is
+dated by publication year and the family series by earliest filing year.
+Their annual observations therefore have different temporal anchors, and one
+series is not assumed to nest inside the other. WIPO's Data Center
+documentation states that both the technology indicators and the family
+indicators are compiled from PATSTAT \citep{wipoabout}. The two products
+therefore share a lineage, so the non-nesting of annual observations is a
+dating-rule artefact rather than a difference of source. The family export is
+used first for a window-level consistency check and then for a separate
+geographic-scope illustration. These uses avoid presenting a same-year
+difference between the products as though it were a count of duplicates.
+
+\subsection{Sample construction}\label{sec:sample}
+
+Sample construction begins with all 663,584 bulk rows. The analysis retains
+positive technology-field codes, excludes unrecorded applicant origins and
+forms origin-specific totals over 2018--2022. Economies enter the comparison
+when they have at least 500 publications in that window. The resulting sample
+contains 68 economies. The threshold screens volume, not attribution
+meaningfulness. Repeating the range calculation with a threshold of 200 or
+1,000 leaves the observed origin--year--field duplication-factor range at
+1.05--4.48.
+
+The home-office share requires a correspondence between applicant origin and
+an origin-resolved office row. This is measurable for 58 economies. For 10
+economies, the bulk file has no origin-resolved row for the corresponding home
+office. That absence is not coded as a zero. A missing home-office block can
+reflect source coverage rather than no resident filing, so plotting it at zero
+would attach a behavioural interpretation that the data do not support. These
+economies remain in duplication and PCT calculations based on the observed
+offices, but they are excluded from the domestic-share distribution and from
+the horizontal axis of Fig.~\ref{fig:dup}.
+
+$D$ is a property of the cell, not only of the file. The direction of
+coarsening is arithmetic: the sum of within-cell maxima is at least the
+maximum of the summed cells, so coarser cells cannot lower $D$. The magnitude
+is the finding. At origin--year--field granularity the range is 1.05 / 2.27 /
+4.48. Collapsing the field dimension raises it to 1.05 / 2.51 / 5.41 at
+origin--year cells. Collapsing year while retaining field isolates the
+temporal-spread component: origin--field $D$ is 1.05 / 2.39 / 4.90, so the
+maximum rises from 4.48 to 4.90 and the median from 2.27 to 2.39. Origin-only
+$D$ is 1.05 / 2.54 / 5.77. That origin-only quantity is the office-sum
+divided by the largest single named office---the definition previously
+labelled and then corrected away from. Coarser cells therefore raise $D$; they
+do not compress the 4.3-fold headline. This article reports the
+origin--year--field $D$ as the main measure and the coarser range as a check.
+A missing home-office block can still raise the calculated proxy if the
+unobserved office would have been the cell-wise leader.
+
+\subsection{Three quantities and a worked example}\label{sec:quantities}
+
+Let $p_{ioyt}$ denote the publication count for applicant origin $i$, named
+office $o$, publication year $y$ and technology field $t$. Let $h(i)$ be the
+home office corresponding to origin $i$. The home-office share is
+\[
+ H_i =
+ \frac{\sum_{y,t}p_{i,h(i),y,t}}
+      {\sum_{o,y,t}p_{ioyt}},
+\]
+where the denominator contains named offices only. The measure is undefined
+when the source lacks an origin-resolved block for $h(i)$. It is not replaced
+by zero.
+
+Let $q_{iyt}$ denote the count under office \texttt{**}. The PCT-layer share,
+under the inferential identification in Section~\ref{sec:tokens}, is
+\[
+ Q_i =
+ \frac{\sum_{y,t}q_{iyt}}
+      {\sum_{o,y,t}p_{ioyt}+\sum_{y,t}q_{iyt}}.
+\]
+This denominator is deliberately different from that of the home-office
+share: $Q_i$ asks how large the separate layer is when it is placed beside the
+named-office total.
+
+Finally, define the duplication factor as
+\[
+ D_i =
+ \frac{\sum_{y,t}\sum_o p_{ioyt}}
+      {\sum_{y,t}\max_o(p_{ioyt})}.
+\]
+The numerator is the named-office sum. The denominator adds the cell-wise
+leading-office count within each origin--year--technology-field cell. That
+denominator is the sum of within-cell maxima. It is therefore less than or
+equal to the origin-level maximum office, $\max_o(\sum_{y,t}p_{ioyt})$; the
+two denominators differ for 61 of 68 economies (median gap 0.224, maximum
+2.294 at Monaco). The origin-only grain in Section~\ref{sec:sample} is exactly
+office-sum divided by that origin-level maximum, which is why the denominators
+differ. Computed $D$ is the lower of the two ratios. The factor is bounded
+below by unity and rises as meaningful volume is spread across additional
+offices. A regional office, including the European Patent Office, enters as
+one observed office; no equivalent-count multiplier is applied.
+
+The duplication factor confounds office dispersion with the temporal spread
+of publication, because related publications that land in different years
+occupy separate cells and therefore add separate cell-wise maxima. The
+origin--field grain, collapsing year while retaining field, isolates that
+timing component: the maximum rises from 4.48 to 4.90 and the median from
+2.27 to 2.39.
+
+When the home office is the cell-wise leader, $D=1/H$ exactly, up to cells
+where another office leads. China, Korea and Japan sit on that identity
+($H=95.4\%$, $68.1\%$ and $55.4\%$; $D=1.05$, $1.47$ and $1.80$). Singapore's
+home office is not the leader---the United States office is---so the identity
+does not bind: $H=5.0\%$, $1/H=20.08$, $D=2.60$ and residual $17.48$.
+
+China provides the domestic-concentration case. In 2018--2022, 95.4\% of its
+named-office publications are at its home office, and its duplication factor
+is 1.05. The worked reading is straightforward: within the bulk file, the
+named-office sum is only modestly larger than the contribution of the
+cell-wise leading office. This does not prove that the leading-office count is
+a family count. It shows that adding other observed offices makes little
+difference to this particular office-based total.
+
+Singapore provides the contrasting filing profile. Its home-office share is
+5.0\%, so its own office cannot stand in for most publications attributed
+to Singaporean applicants in the file. Its activity is distributed across
+foreign offices, and the office-sum accumulates those observations. The
+contrast with China is therefore not an arithmetic nuisance that a common
+percentage adjustment can remove. The two origins place their publications
+through different office networks.
+
+The sample maximum further clarifies the denominator. Switzerland has a
+duplication factor of 4.48, a home-office share of 3.1\%, and its
+origin-level leading office is the EPO rather than its home office. The
+factor does not say that each Swiss invention has 4.48 publications, nor does
+it place an exact bound on distinct inventions. It says that, under the
+cell-wise construction, the named-office sum is much larger relative to the
+leading-office baseline than it is for China. The measure is consequently
+labelled a duplication \emph{proxy}.
+
+\subsection{Check against WIPO family indicators}\label{sec:check}
+
+A useful proxy should at least order filing profiles similarly to a measure
+that uses families, even though the levels need not coincide. The check
+compares $D_i$ with publications divided by WIPO indicator 6a families over
+the common 2018--2022 window. Seven economies overlap: China, Japan, Korea,
+Malaysia, the Philippines, Singapore and Thailand---all non-EPC origins that
+file through national rather than regional-first routes. Spearman correlation
+is used because the diagnostic claim concerns ordering rather than a linear
+conversion.
+
+The two ratios are not independent measures. $D$ is the office-sum divided by
+the cell-wise leading office; publications per family uses the same office-sum
+as its numerator. Rank agreement is therefore expected to be high if the
+mechanism exists at all. The practical comparison is whether the
+leading-office count or the office-sum lies closer to families. Publications
+and families use different dating rules, and $D$ cannot fall below unity
+whereas the observed publications-to-families ratio can. The exercise is a
+consistency check on behaviour, not an estimated deduplication formula.
+Family exports for four EPC origins were not available in the pinned input.
+Section~\ref{sec:proxy-result} reports the coefficients and the error
+comparison.
+
+\subsection{Geographic-scope comparison: indicators 6a and 7}\label{sec:scope-method}
+
+The final analysis holds the family unit constant and changes geographic
+scope. WIPO indicator 6a counts all families by applicant origin and earliest
+filing year. Indicator 7 counts the subset extended to at least one foreign
+office. China and Singapore are used because their domestic shares in the
+bulk file already establish sharply contrasting filing profiles. Their
+family series from 2000--2022 show whether the substantive comparison also
+depends on including or excluding domestic-only families.
+
+The all-family and foreign-oriented ratios are not alternatives from which the
+article selects a preferred headline. They answer different questions. The
+first describes the full first-filing-based family portfolio observed for an
+origin. The second describes the internationally extended subset. Placing
+them together demonstrates that correcting the unit does not eliminate the
+need to define scope.
+
+\section{Results}\label{sec:results}
+
+\subsection{Sample and range table}\label{sec:range}
+
+Table~\ref{tab:range} summarises the three bulk-file quantities. Across the 58
+economies whose home office is measurable, the home-office share ranges from
+0.3\% (Saudi Arabia) to 95.4\% (China), with a median of 37.8\% (p25 9.2,
+p75 64.8). Across all 68 economies, the inferred PCT-layer share ranges from
+3.2\% (Macao SAR) to 54.4\% (Iran) and has a median of 15.1\% (p25 12.7,
+p75 18.6). Both PCT endpoints are origins whose home office is unmeasurable.
+The duplication factor ranges from 1.05 to 4.48. Its all-economy median is
+2.27 (p25 1.55, p75 3.34); among the 58 economies with a measurable home
+office, it is 2.14 (p25 1.48, p75 3.45).
+
+\begin{table*}[t]
+\caption{Filing-profile measures in the WIPO bulk file, 2018--2022.
+The sample contains 68 economies with at least 500 publications; the
+home-office row contains the 58 economies for which the own office is
+origin-resolved. The fourth row reports $D$ on that measurable-home base.
+The fifth row is the fraction of the identity $D=1/H$ actually realised.
+Per-economy values are in \texttt{counting\_generality.csv}
+in the replication archive. Source: authors' calculations from the WIPO bulk
+patent-indicators file.}
+\label{tab:range}
+\centering
+\small
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+Measure & $n$ & Min. & p25 & Median & p75 & Max. \\
+\midrule
+Home-office share (\%) & 58 & 0.3 & 9.2 & 37.8 & 64.8 & 95.4 \\
+PCT-layer share (\%) & 68 & 3.2 & 12.7 & 15.1 & 18.6 & 54.4 \\
+Duplication factor & 68 & 1.05 & 1.55 & 2.27 & 3.34 & 4.48 \\
+Duplication factor (measurable home) & 58 & 1.05 & 1.48 & 2.14 & 3.45 & 4.48 \\
+$D\cdot H$ (measurable home) & 58 & 0.005 & 0.32 & 0.90 & 0.99 & 1.00 \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+The duplication proxy does not apply a common uplift across origins. The more
+robust summary is the median pairwise ratio of 1.57, the median of the 2,278
+pairwise ratios $D_i/D_j$ taken larger over smaller. The 4.3-fold figure is
+the ratio of the sample ends, Switzerland versus China. These are differences
+in $D_i$, not estimates of the number of copies attached to an invention.
+They establish the empirical range over which the same office-summing
+operation behaves differently in this file. The pooled median of 2.27 is a
+composition artefact: 35 of the 68 are EPC contracting-state origins. Group
+medians on the 58 economies with a measurable home office are the more stable
+summary.
+
+\subsection{Residual from the identity $D=1/H$}\label{sec:dup-result}
+
+Figure~\ref{fig:dup} places the duplication factor against the home-office
+share for the 58 measurable economies, with the curve $D=1/H$ overlaid.
+Nineteen of those 58 lie within 0.05 of the identity. Thirty-five of 58 have
+a home office that is the origin-level leading named office. All 19 are among
+those 35. The remaining 16 lead at origin level but not in every year-field
+cell, so cell-wise $D$ sits below $1/H$. China occupies the low-duplication,
+domestic-heavy end at 95.4\% and 1.05, where the identity binds. The
+information in the scatter is not a downward-sloping cloud. It is the gap
+below $1/H$. At low home-office share the identity predicts $D$ far above the
+observed ceiling.
+
+The residual $1/H-D$ inherits that explosion: its maximum is set by how small
+the smallest $H$ happens to be. Across the 58 it runs from 0.00 to 369.68.
+The scale-free counterpart is $D\cdot H$, the fraction of the identity
+actually realised, bounded in $(0,1]$. It has median 0.90 (p25 0.32, p75
+0.99); 23 of 58 realise at least 0.95 of it. Economies on the identity
+realise essentially all of it (China, Korea and Japan at 1.00; Malaysia at
+0.96). The low-$H$ group does not: Singapore 0.13, Switzerland 0.14, Saudi
+Arabia 0.005. Economies that file away from home do not disperse across all
+offices. They concentrate in a handful of large ones, so office-sum inflation
+is bounded far below what home-office share alone would imply.
+
+Saudi Arabia has $H=0.3\%$, $1/H=371.41$, $D=1.73$ and residual $369.68$, with
+32 origin-resolved home-office publications. That count places it at the
+boundary of the measurable/unmeasurable distinction rather than clearly inside
+it: a partially resolved home-office block also produces a small non-zero
+count, and 32 publications over five years cannot carry the paper's largest
+single number as a settled filing pattern. Among economies with at least
+1,000 origin-resolved home-office publications, the largest residual is
+Israel: $H=2.9\%$, $1/H=34.95$, $D=2.55$ and residual $32.40$, on 1,450 home
+publications. Singapore remains the interpretable mid-case: $1/H=20.08$,
+$D=2.60$ and residual $17.48$.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.88\textwidth]{figA1_duplication_vs_domestic}
+\caption{Duplication factor versus the applicant-origin home-office share,
+2018--2022, for the 58 economies with a measurable home office. The dashed
+curve is the identity $D=1/H$, which is arithmetic when the home office is
+the cell-wise leader. Marker fill denotes whether the home office is the
+origin-level leading named office; colour denotes EPC versus non-EPC origin.
+At low $H$, Singapore has $1/H=20.08$ and $D=2.60$; Saudi Arabia has
+$1/H=371.41$ and $D=1.73$; the observed ceiling is 4.48. Ten economies remain
+in the range statistics but are omitted here because the home office is not
+origin-resolved. Source: authors' calculations from the WIPO bulk
+patent-indicators file.}
+\label{fig:dup}
+\end{figure*}
+
+The high tail of $D$ remains an EPC pattern after home-office share is held.
+Partial Spearman of $D$ with EPC status controlling for $H$ is $+0.413$
+($p=0.0016$; 95\% CI $[0.171, 0.608]$) across the 58. Table~\ref{tab:epcq}
+shows where that association sits: in the lowest $H$ quartile, median $D$ is
+2.57 among six non-EPC origins and 3.77 among nine EPC origins. The gap
+narrows in the upper half of $H$. The second quartile's non-EPC cell has only
+two origins and is not a basis for a separate claim. At the lowest $H$ the
+values still interleave---New Zealand 3.87 beside Sweden 3.88---and none of
+those four matched-$H$ origins is led by the EPO (all four are led by the
+United States office). EP-as-leader is therefore not required for high $D$.
+The matched comparison does not replace the partial correlation; it shows
+that the residual EPC association is a shift in the low-$H$ distribution, not
+a requirement that the regional office lead.
+
+\begin{table}[t]
+\caption{Median duplication factor by home-office-share quartile and EPC
+status, 2018--2022, measurable-home base ($n=58$). Quartiles are of $H$.
+The second-quartile non-EPC cell has $n=2$. Source: authors' calculations
+from the WIPO bulk patent-indicators file.}
+\label{tab:epcq}
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Quartile & $n$ & non-EPC $D$ & $n$ & EPC $D$ \\
+\midrule
+Q1 (low $H$) & 6 & 2.57 & 9 & 3.77 \\
+Q2 & 2 & 2.84 & 12 & 3.67 \\
+Q3 & 7 & 1.80 & 7 & 2.01 \\
+Q4 (high $H$) & 11 & 1.23 & 4 & 1.33 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\caption{Duplication factor by EPC status, 2018--2022. The measurable-home
+base of 58 is the primary comparison; the all-68 rows include ten origins
+whose home office is not origin-resolved. Source: authors' calculations from
+the WIPO bulk patent-indicators file.}
+\label{tab:epc}
+\centering
+\small
+\begin{tabular}{@{}llcccc@{}}
+\toprule
+Base & Group & $n$ & Min. & Median & Max. \\
+\midrule
+58 & EPC & 32 & 1.15 & 2.82 & 4.48 \\
+58 & non-EPC & 26 & 1.05 & 1.63 & 3.87 \\
+68 & EPC & 35 & 1.15 & 2.75 & 4.48 \\
+68 & non-EPC & 33 & 1.05 & 1.73 & 4.10 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:epc} records the group ranges. On the measurable-home base
+the non-EPC maximum is New Zealand. The five highest values on that base are all
+EPC: Switzerland, Luxembourg, Norway, Belgium and the Netherlands. Ten of the
+68 origins have the EPO as origin-level leading office; all ten are EPC
+origins. The all-68 non-EPC maximum is Antigua and Barbuda, whose home office
+is unmeasurable.
+
+\subsection{The PCT layer}\label{sec:pct-result}
+
+The separated \texttt{**} office layer also varies by applicant origin.
+Its sample range is 3.2\% (Macao SAR) to 54.4\% (Iran), with a median of
+15.1\%. Iran routing over half of its publications through office
+\texttt{**} is the sample maximum; because its home office is unmeasurable,
+that endpoint is taken up with Antigua and Monaco in
+Section~\ref{sec:limitations} rather than treated here as a confirmed filing
+behaviour. In the China--Singapore comparison, the layer accounts for 3.9\%
+and 20.2\%, respectively, over 2018--2022. Adding this layer to named-office
+publications would therefore change the two origin totals by different
+proportions.
+
+If office \texttt{**} is the PCT international phase, the PCT-layer share
+$Q$ should rise as the home-office share $H$ falls. Over the 58 measurable
+economies, Spearman correlation of $Q$ with $H$ is $-0.559$ ($p=0.000005$;
+95\% CI $[-0.714, -0.352]$). The relationship is descriptive, not
+confirmation: $H$ and $Q$ share the named-office sum in different roles in
+their denominators, and the scatter is fat. It also does not discriminate
+against the rival reading. If \texttt{**} were an unresolved-office bucket,
+unresolved-office publications would still come disproportionately from
+origins whose filings are dispersed, which is the same low-$H$ group. Both
+readings imply a negative $Q$--$H$ correlation.
+
+A rank check against published PCT applications by origin does discriminate.
+If office \texttt{**} is the international phase, origin-level \texttt{**}
+volumes should track WIPO's published PCT filings; an unknown-office bucket
+would have no reason to. Spearman correlation of 2020 office-\texttt{**}
+publications against published 2020 PCT applications by origin is $+0.991$
+over the twenty largest named origins ($p<10^{-15}$; 95\% CI $[0.977,
+0.997]$), using the same 2020 office-\texttt{**} construction as the 309,728
+aggregate \citep{wipo2021pct}. Sweden matches exactly: 4,356 publications
+under \texttt{**} and 4,356 published PCT applications. The $Q$--$H$
+correlation is consistent with the PCT identification without ruling out the
+alternative; this origin-level check is the test that would have failed if
+\texttt{**} were merely unresolved offices.
+
+Table~\ref{tab:pct} reports the PCT-layer share for selected origins in the
+68, after that correlation. The values use the same $\texttt{tec\_id}>0$,
+2018--2022 and 68-economy filters as the rest of the paper; they are not the
+all-year audit table. Russia (4.5\%) and China (3.9\%) sit below Korea
+(8.8\%) and India (7.5\%), which in turn sit below Japan (14.3\%), Germany
+(13.7\%) and the United States (13.3\%); the Netherlands (16.6\%) and
+Sweden (18.8\%) are higher still.
+
+\begin{table}[t]
+\caption{PCT-layer share of publications for selected origins in the 68,
+2018--2022, $\texttt{tec\_id}>0$, under the same 68-economy filters as the
+range table; not the all-year audit table. Office \texttt{**} is treated as
+the PCT international phase on behavioural grounds and on the origin-level
+rank check in Section~\ref{sec:pct-result}; the mapping is still without a
+file-specific dictionary. Source: authors' calculations from the WIPO bulk
+patent-indicators file.}
+\label{tab:pct}
+\centering
+\small
+\begin{tabular}{@{}lc@{}}
+\toprule
+Origin & PCT-layer share (\%) \\
+\midrule
+Russia & 4.5 \\
+China & 3.9 \\
+Korea & 8.8 \\
+India & 7.5 \\
+Japan & 14.3 \\
+Germany & 13.7 \\
+United States & 13.3 \\
+Netherlands & 16.6 \\
+Sweden & 18.8 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This result is distinct from Fig.~\ref{fig:dup}. The duplication factor
+describes dispersion across named offices after the token has been separated.
+The PCT-layer share describes the size of the removed route relative to the
+combined total. An analyst interested in PCT use may retain and report it as
+an outcome. An analyst describing national or regional office publications
+should separate it and state that treatment. Neither choice converts
+publications into families.
+
+\subsection{Rank instability}\label{sec:ranks}
+
+Figure~\ref{fig:ranks} ranks the 25 largest origins by named-office
+publication volume under three rules, each legitimate for a different
+question: the office-sum including \texttt{**}, the office-sum excluding
+\texttt{**}, and the cell-wise leading office. None is the correct ranking.
+The figure is restricted to the top 25 by named-office volume because the
+full 68 is unreadable, not in order to hide a larger movement outside that
+window. Among those 25, Russia ranks 13th on the office-sum including
+\texttt{**} and 6th on the cell-wise leading office, because its PCT-layer
+share is 4.5\% and its domestic home-office share is 91.9\%, so removing
+\texttt{**} and moving to the leading office penalises internationally
+dispersed origins more than Russia. T\"urkiye ranks 23rd versus 15th; Brazil
+24th versus 16th; Poland 26th versus 18th. The largest movement among the 68
+is Antigua and Barbuda, 50th versus 65th, a first-named-applicant domicile
+case taken up in Section~\ref{sec:limitations}. The figure is a consequence
+of the range in Table~\ref{tab:range}: if $D$ is not a common multiplier,
+origin order is not invariant to the counting rule.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.88\textwidth]{figA5_rank_instability}
+\caption{Rank of the 25 largest origins by named-office publication volume
+under three counting rules, 2018--2022. The columns are the office-sum
+including \texttt{**}, the office-sum excluding \texttt{**}, and the
+cell-wise leading office. All three are legitimate answers to different
+questions; none is the correct ranking. The colour bar reaches 8. Among this
+top 25, Russia ranks 13th (sum including \texttt{**}) versus 6th (cell-wise
+leading office); T\"urkiye 23rd versus 15th; Brazil 24th versus 16th; Poland
+26th versus 18th. The figure is restricted to the top 25 because the full 68
+is unreadable. Antigua and Barbuda, 50th versus 65th, is the largest
+movement among the 68. Source: authors' calculations from the WIPO bulk
+patent-indicators file.}
+\label{fig:ranks}
+\end{figure*}
+
+\subsection{Proxy versus families}\label{sec:proxy-result}
+
+Figure~\ref{fig:proxy} places WIPO all-family counts on a logarithmic
+horizontal axis against the cell-wise leading office (circles) and the
+office-sum (squares) for the seven overlapping economies. The dashed line is
+1:1. The leading-office series tracks that line; the office-sum series lies
+above it, except where dating rules pull a point toward or below equality.
+The Philippines office-sum can sit near or below the 1:1 line because
+publication year and earliest filing year do not nest; that is a feature of
+the dating rules in Section~\ref{sec:sources}, not an anomaly in the
+Philippines series.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figA2_proxy_validation}
+\caption{WIPO patent families (indicator 6a) on a logarithmic horizontal axis
+against the cell-wise leading office (circles) and the office-sum (squares),
+2018--2022, for the seven economies available in both sources. The dashed
+line is 1:1. A faint vertical connector joins each pair; that gap is that
+economy's $D$. The Philippines office-sum can sit near or below the 1:1 line
+because publication year and earliest filing year do not nest. Source:
+authors' calculations from the WIPO bulk patent-indicators file and WIPO
+indicator 6a.}
+\label{fig:proxy}
+\end{figure}
+
+Spearman $+1.000$ between the cell-wise leading office and families on $n=7$
+is a size ranking, not an independent test. The office-sum against families
+returns Spearman $+0.964$ ($p=0.0005$; 95\% CI $[0.771, 0.995]$), the same
+coefficient as $D$ against publications/families, because those ratios share
+the office-sum numerator. Rank agreement barely discriminates the two
+candidates. What separates them is the mean absolute relative error: $0.101$
+for the leading office versus $0.803$ for the office-sum, or $0.069$ versus
+$0.803$ once the Philippines is excluded. The year-anchor offset---publication
+year versus earliest filing year---applies to all seven economies. It is
+visible in the Philippines because that origin's high home-office share puts
+its ratio closest to unity to begin with (leading-office/families $0.70$).
+Singapore has $|\mathrm{lead}/\mathrm{fam}-1|=0.22$, the largest remaining
+error. Spearman
+correlation of (leading-office/families) with $D$ is $-0.214$ ($p=0.6445$):
+there is no evidence at $n=7$ that $D$ predicts the error a user would incur,
+and $D$ is not a validated warning light for that proxy error. Seven points
+support a scoped recommendation for this overlap, all non-EPC origins filing
+through national rather than regional-first routes. They do not support a
+general calibration equation, they do not validate the recommendation for the
+EPC structural case, and they do not support dividing an office-sum by $D_i$
+and calling the result families.
+
+\subsection{China--Singapore on all families versus foreign-oriented families}
+\label{sec:scope-result}
+
+Figure~\ref{fig:scope} reports the China-to-Singapore ratio while holding the
+family unit constant. China's all-family series rises from 23,079 in 2000 to
+1,517,232 in 2022; Singapore's rises from 716 to 3,036. On all families, the
+2022 ratio is about five hundred. When the scope is restricted to families
+extended abroad, the ratio is about twenty. The vertical axis is logarithmic
+so that the foreign-oriented series remains readable. The 2019 dip in the
+all-family series is in the data (ratio 416). Values for 2022 are
+provisional because later foreign members may not yet be observed.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.88\textwidth]{figA4_china_singapore_ratio}
+\caption{China-to-Singapore patent-family ratio under two geographic scopes,
+by earliest filing year, 2000--2022, on a logarithmic vertical axis. The
+solid series uses all families (WIPO indicator 6a); the dashed series uses
+only families extended to at least one foreign office (indicator 7). The
+2019 dip in the all-family series is in the data (ratio 416). Values for
+2022 are provisional because later foreign members may not yet be observed.
+Source: authors' calculations from WIPO IP Statistics Data Center indicators
+6a and 7.}
+\label{fig:scope}
+\end{figure*}
+
+The difference corresponds to the composition of the two portfolios. In
+2022, 3.6\% of Chinese families are observed as extended abroad, compared with
+91.9\% of Singaporean families. Because recent first filings may acquire
+foreign members after their earliest filing year, the 2022
+foreign-oriented result is provisional. The more mature 2018 anchor gives
+the same qualitative contrast: about 470 on all families and about 15 on
+foreign-oriented families.
+
+\section{Discussion}\label{sec:discussion}
+
+\subsection{What an office-sum measures}\label{sec:meaning}
+
+Three findings do not depend on the scoped checks that follow. First, the
+office-sum is not an invention count. Relative to the cell-wise leading
+office, inflation ranges from 1.05 to 4.48 across 68 economies, with a median
+pairwise ratio of 1.57; it is not a common multiplier. Second, where the home
+office leads, $D$ is arithmetically $1/H$, so most observed variation in $D$
+is a restatement of home-office share. Where it does not lead, $D$ stays far
+below $1/H$ because foreign filings concentrate in a few large offices, and
+$D\cdot H$ is the fraction of that identity the data deliver. Third, origin
+rankings are not invariant to defensible counting rules, demonstrated on the
+top 25. Everything else in this section is scoped.
+
+The office-sum is not meaningless; it is misnamed when presented as inventions.
+Properly labelled, it describes the volume of publication assignments
+generated by applicants from an origin across the offices represented in the
+bulk file. That volume combines at least two components: the scale of
+underlying patenting and the breadth of the office network through which
+protection is sought. For questions about documentary reach, filing routes or
+the international workload associated with an origin, the combination may be
+the object of interest. For comparisons of inventive output, it is a
+confounder.
+
+The empirical range shows why this is more than a terminological preference.
+A common multiplier would preserve origin ratios even while making every
+level too large. The measured proxy is not common. The median pair differs
+by 1.57; China and Switzerland sit at 1.05 and 4.48, a 4.3-fold difference
+at the sample ends. Office summing therefore embeds an origin-specific filing
+profile. Much of that profile is arithmetic: where the home office is the
+cell-wise leader, $D=1/H$. The remainder is structure. Observed $D$ lies
+below $1/H$ because foreign filings concentrate in a few large offices.
+Partial Spearman of $+0.413$ after controlling for $H$ is the evidence that
+the high tail remains an EPC pattern rather than a generic
+international-orientation gradient; the matched-$H$ interleave (New Zealand
+beside Sweden) shows that EP-as-leader is not required for that tail. The
+pooled median of 2.27 is a mixture: 35 of the 68 are EPC contracting-state
+origins, and the group medians on the measurable-home 58 are the more stable
+summary. The
+direction of cell coarsening is arithmetic---coarser cells cannot lower
+$D$---and the magnitude is the finding: origin-only $D$ reaches 1.05 / 2.54 /
+5.77, which is the office-sum divided by the largest single named office.
+
+This does not imply that the cell-wise leading office supplies the true
+invention count. China's factor of 1.05 says that other named offices add
+little relative to the leading-office baseline in these cells. It does not
+say that the Chinese home-office total contains one record per invention.
+The baseline can include multiple procedural publications, whole-counted
+technology assignments and other features of the source. Likewise,
+Switzerland's 4.48 is not an exact average family size. The diagnostic
+compares concentration under one consistent aggregation rule; it does not
+recover hidden record linkage.
+
+The PCT result adds a separate source of non-comparability. Office
+\texttt{**} tracks published PCT applications by origin, but its share is not
+constant across origins. In the worked pair, Singapore's 20.2\% is far above
+China's 3.9\%. A total formed by adding that route to all named offices would
+therefore alter the comparison again. The correct treatment depends on the
+question, but the choice cannot remain implicit.
+
+The family analysis then establishes a second distinction. Moving from
+office publications to patent families addresses the multi-office assignment
+problem because related documents are grouped under a declared family rule.
+It does not decide whether domestic-only families belong in the construct.
+The China--Singapore ratio in 2022 is about five hundred for all families and
+about twenty for the foreign-oriented subset. Neither ratio invalidates the
+other. They describe different geographic scopes, and their distance reflects
+the contrast between 3.6\% and 91.9\% foreign extension in the two portfolios.
+
+\subsection{Using the file}\label{sec:using}
+
+For a patent-information practitioner, the safest workflow begins before
+aggregation, with a sentence that names the intended construct. If the
+question concerns publications handled by a specified office, the office
+dimension should be fixed and the resulting statistic labelled as
+publications. If the question concerns an origin's use of the international
+system, a multi-office sum or the PCT layer may be informative, provided the
+unit remains publication assignments and the routes are reported separately.
+If the question concerns inventions, the analysis needs a family product or
+document-level data from which an explicit family definition can be built.
+
+This sequence is especially important in reusable dashboards and country
+rankings. A code path that groups by applicant origin and sums every remaining
+numeric column can be technically correct yet conceptually wrong. The error
+will not be visible as a missing value or an implausible total. Fig.~\ref{fig:ranks}
+shows the consequence: equally defensible rules reorder the same origins.
+Metadata and method notes therefore need to travel with the exported table,
+not remain in the analyst's private understanding.
+
+When only this file is available, the cell-wise leading office is closer to
+families than the office-sum over the seven-economy overlap, all non-EPC
+origins filing through national rather than regional-first routes. The
+validation excludes the EPC structural case. Singapore is the only low-$H$
+analogue in that overlap and has the largest genuine error. Four EPC family
+exports were not available. The recommendation is therefore scoped to this
+overlap; it is not stated for regional-first filing systems. $D$ predicts the
+office-sum's distance from the leading office by construction. There is no
+evidence at $n=7$ that it predicts the error a user would incur, so it is not
+a validated warning light for that proxy error. It does not support dividing
+an office-sum by $D_i$ and calling the result families.
+
+Users should also preserve the distinction between the two \texttt{**}
+tokens in processing code and documentation. Dropping both with one
+unexplained filter would conceal why observations were removed. Origin
+\texttt{**} cannot support country attribution. Office \texttt{**}, under
+the interpretation used here, is analytically meaningful as the PCT layer.
+A reproducible transformation should name the column and reason for each
+treatment.
+
+Finally, a family total should carry its scope in the table heading. ``Patent
+families by applicant origin'' is incomplete if the reader cannot tell whether
+domestic-only families are included. Indicator 6a is suitable when the full
+origin portfolio is intended. Indicator 7 is suitable when the construct is
+internationally extended inventions. International families, including
+triadic constructions, can improve comparability for some research questions
+but also select on filing strategy and market reach
+\citep{dernis2004triadic,dechezlepretre2017families}. The scope should follow
+the question rather than being treated as a generic quality filter.
+
+\subsection{Limitations}\label{sec:limitations}
+
+The first limitation concerns identification of the PCT layer. Origin-level
+office-\texttt{**} volumes track published PCT applications by origin
+(Spearman $+0.991$ over the twenty largest named origins in 2020), which is
+the test an unknown-office bucket would fail. A file-specific dictionary that
+explicitly maps this token has still not been located. All PCT-layer findings
+are therefore stronger than a $Q$--$H$ correlation but still without a
+dictionary confirmation. A different documented meaning would require the
+layer to be renamed and reinterpreted.
+
+Second, the duplication factor is intentionally modest in what it claims.
+The aggregate bulk file lacks identifiers linking related publications across
+offices, so $D_i$ cannot distinguish an international family from unrelated
+documents that happen to share a cell. It cannot identify continuations,
+procedural publications or family structures. Its denominator is a cell-wise
+leading-office baseline, not a proven count of inventions, and 4.3 is a
+fold-difference between the proxy's sample ends rather than a deduplication
+bound. $D$ also confounds office dispersion with the temporal spread of
+publication; the origin--field grain bounds that timing component.
+
+Third, the comparison with family indicators contains seven economies, all
+non-EPC origins filing through national rather than regional-first routes.
+The leading-office comparison discloses a scoped practical recommendation,
+but the exercise is not a validation study across the full sample and it
+excludes the EPC structural case the paper itself identifies. Family exports
+for four EPC origins were not available. In particular, the rank check does
+not establish a conversion from the proxy to family counts, and $D$ is not a
+validated warning light for the error a user would incur. More overlapping
+origins or record-level family links would be needed to test general
+calibration.
+
+Fourth, whole counting presents a documentation tension. The bulk-file values
+are integers and the Schmoch concordance supports assignment to multiple
+technology fields, while WIPO's general Data Center description refers to
+fractional counting for technology indicators \citep{schmoch2008,wipoabout}.
+This article reports the file as observed and retains a consistent
+field-cell construction. It cannot resolve whether the general documentation
+was intended to describe this exact download. This uncertainty reinforces the
+need to call the 50.2 million total assignments rather than documents.
+Whole-versus-fractional counting and the identification of office \texttt{**}
+are both questions about how one PATSTAT compilation was run
+\citep{wipoabout}.
+
+Fifth, WIPO attributes origin to the residence of the first-named applicant
+and ignores co-applicants \citep{wipoabout}. Multi-jurisdiction filings by
+multinational groups can therefore carry different first-named applicants at
+different offices, so the same invention may be attributed to different
+origins in different office cells. That attribution rule places
+micro-state and offshore-domicile origins at the extremes of the structural
+measures this file produces. Antigua and Barbuda has $D=4.10$, origin-only
+$D=5.77$, 1,592 named-office publications and Japan as origin-level leading
+office; its home office is unmeasurable, and it is the all-68 non-EPC
+maximum and the largest rank movement among the 68 (50th versus 65th).
+Monaco has the largest labelled-versus-computed $D$ gap, 2.294, with $D=2.56$,
+the EPO as origin-level leader, a measurable home office and EPC membership.
+Iran has the sample-maximum PCT-layer share, 54.4\%, and an unmeasurable home
+office; it belongs in this class rather than in the PCT-layer result as a
+confirmed filing behaviour (Section~\ref{sec:pct-result}).
+None of these is an inventing-economy profile in the ordinary sense; they
+follow from first-named-applicant attribution and from unmeasurable home
+offices. The 500-publication threshold
+does not screen this, because it screens volume rather than attribution
+meaningfulness. Singapore remains a hub case whose publications are
+distributed across foreign offices, but it is no longer the obvious
+illustration of the attribution rule.
+
+Sixth, the family tail is subject to right truncation. Families are dated by
+earliest filing year, but foreign members can appear later. The 2022
+foreign-oriented shares and ratio are therefore provisional, and the 2018
+anchor is reported as a more mature comparison. This issue does not affect
+the 2018--2022 publication-window range in the same way because those
+observations are dated by publication year, but it limits direct annual
+alignment between products.
+
+Finally, the home office is unmeasurable for 10 of the 68 economies. Retaining
+their observed-office duplication factors preserves sample coverage, but a
+missing home-office block may omit the true cell-wise leader and raise the
+proxy. Saudi Arabia's 32 origin-resolved home-office publications place it at
+that boundary rather than clearly inside the measurable set
+(Section~\ref{sec:dup-result}). The separate median for the 58 measurable
+economies and the exclusion of missing shares from Fig.~\ref{fig:dup} make
+that limitation visible. Neither the threshold sensitivity, the cell-grain
+check nor the reported medians can replace origin-resolved source coverage.
+
+\section{Conclusions}\label{sec:conclusions}
+
+Three findings hold without the scoped qualifications that follow. The
+office-sum is not an invention count: relative to the cell-wise leading
+office, $D$ ranges from 1.05 to 4.48 across 68 economies (median pairwise
+ratio 1.57), and it is not a common multiplier. Where the home office leads,
+that range is the identity $D=1/H$; where it does not, $D$ stays far below
+$1/H$ because foreign filings concentrate in a few large offices. Origin
+rankings are not invariant to defensible counting rules, demonstrated on the
+top 25.
+
+The WIPO patent-publications-by-technology bulk file supports useful
+cross-country work when that assignment structure is respected. Partial
+Spearman of $D$ with EPC status controlling for $H$ is $+0.413$, so the high
+tail remains an EPC pattern after home-office share is held; EP-as-leader is
+not required for it. Office \texttt{**} tracks published PCT applications by
+origin (Spearman $+0.991$) and should be reported according to the question
+being asked. Over the seven-economy overlap---all non-EPC origins filing
+through national rather than regional-first routes---the cell-wise leading
+office is closer to families than the office-sum (mean absolute relative
+error 0.101, or 0.069 excluding the year-anchor case, versus 0.803). That
+recommendation is not validated for the EPC structural case; Singapore is the
+only low-$H$ analogue in the overlap and has the largest remaining error
+(0.22). Once families are used, geographic scope must still be defined: all
+families and foreign-oriented families produce different but legitimate
+China--Singapore comparisons (about 500 versus about 20). Interpretable
+patent statistics therefore require three explicit choices---counting unit,
+treatment of the PCT layer and family scope---before the country totals are
+compared.
+
+\section*{Data availability}
+
+The bulk file and the family export are public. The derived tables, figure
+files and machine-readable record of numeric claims are archived with the
+analysis pipeline at
+\url{https://github.com/samiurk70/WIPO-Patent-Research}.
+Per-economy home-office share, PCT-layer share and duplication factor for the
+68 economies are in \texttt{counting\_generality.csv} in that archive.
+A Zenodo snapshot will be linked here when minted.
+
+\section*{Declaration of competing interest}
+
+The authors declare that they have no known competing financial interests or
+personal relationships that could have appeared to influence the work
+reported in this paper.
+
+\section*{Declaration of generative AI and AI-assisted technologies in the
+manuscript preparation process}
+
+During the preparation of this work the authors used an AI-assisted editor in
+order to organise the draft from the authors' analysis pipeline and to match
+the Elsevier CAS template. After using this tool, the authors reviewed and
+edited the content as needed and take full responsibility for the content of
+the published article.
+
+\section*{Acknowledgements}
+
+The authors thank the maintainers of the WIPO IP Statistics Data Center. The
+patent-family series was exported by hand from that interface; the remaining
+inputs were retrieved by script.
+
+\printcredits
+
+\bibliographystyle{elsarticle-num}
+\bibliography{refs}
+
+\end{document}
