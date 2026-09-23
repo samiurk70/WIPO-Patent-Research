@@ -1,0 +1,2 @@
+wipo-data-patent-indicators.zip: copied from ISBM working cache 2026-09-02 (original retrieval 30 July 2026)
+from https://www.wipo.int/documents/d/ip-statistics/wipo-data-patent-indicators.zip

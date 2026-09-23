@@ -1,0 +1,22 @@
+WIPO patent-family series -- manual export from the IP Statistics Data Center
+https://www3.wipo.int/ipstats/   retrieved 2026-09-02 by S.R. Khan
+
+Indicator      : 6a - Patent family by origin
+Report type    : Total count by applicant's origin
+Attribution    : APPLICANT origin (matches the publication file already in the pipeline)
+Year basis     : earliest filing (first-filing based), NOT publication year
+Years exported : 2000-2024
+Origins        : the 13 study economies WIPO lists. Timor-Leste returns no result and is
+                 not selectable with data; Lao PDR is present but single-digit and sparse.
+                 China, Hong Kong SAR was excluded -- separate origin, not in the set.
+Source stamp   : "WIPO statistics database. Last updated: May 2026"
+
+Read by pipeline/load_wipo_families.py, which records two assumptions:
+  - a blank cell is zero families that year, EXCEPT where a year is blank for every
+    origin (2024), which is not-yet-reported and is dropped;
+  - RQ1 uses 2000-2022 (WINDOW_END). 2023 carries artefactual country values
+    (Philippines 7% of its own preceding five-year mean, Indonesia 862%).
+
+NOTE the year basis. This series is anchored on earliest filing; the publication file is
+anchored on publication year. They are different measurements, not two views of one
+count, and Section 3.2 must say so.

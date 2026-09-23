@@ -1,0 +1,52 @@
+# raw input manifest - generated 2026-09-02T22:36:02.835095+00:00
+# sha256  size_bytes  mtime_utc  path
+1657f57a2d2e49c053b169b6b900c1c60a4a95a1ec6b57df09f0c66e67574d01  4234  2026-09-02T15:38:42+00:00  wb_BM_GSR_ROYL_CD.csv
+550963d3be1e6f4a99c93af3e5c42ef389fd4be6f06a15c9d76897b4624af82b  3641  2026-09-02T15:38:42+00:00  wb_BX_GSR_ROYL_CD.csv
+29f749ee8d3e1152e602e3f5ccdf3b92f68de48f415e02c606b4fb4af9553a6e  1728  2026-09-02T15:38:42+00:00  wb_EG_FEC_RNEW_ZS.csv
+35ea4cc1aede53797a44817e8a7da5dc258cd1c200e3d5992669cccc7a4f9393  6315  2026-09-02T15:38:42+00:00  wb_EN_GHG_CO2_PC_CE_AR5.csv
+02fc02eba55062e0a25d349162a63d0ee742ed093891b799a110f23fb1aa49cf  1811  2026-09-02T15:38:42+00:00  wb_GB_XPD_RSDV_GD_ZS.csv
+7da5564ef6426e6253e95f86f15c14343cdfce0a9d90a6d2181c00a7ec234775  4304  2026-09-02T15:38:42+00:00  wb_GOV_WGI_CC_EST.csv
+d497b3c4f625b1f873974ebb46f8b5b96bcb94dfd2d4478912365d0fa0cb24fe  4035  2026-09-02T15:38:42+00:00  wb_GOV_WGI_GE_EST.csv
+bc966b3ed61e0c8583acd5ca8106ee6c517abef99fafc12b6d6cfeb6f7a5bf89  4300  2026-09-02T15:38:42+00:00  wb_GOV_WGI_RL_EST.csv
+446c61778550cb71f565b5039d20d6e87382e0535c866c801a7148b02bb06c59  4184  2026-09-02T15:38:42+00:00  wb_GOV_WGI_RQ_EST.csv
+249b4ab0beed962c7834c82dfac5a302a18d2e9e64f93f36e6c9816955d8e306  2819  2026-09-02T15:38:42+00:00  wb_IP_JRN_ARTC_SC.csv
+61544a8212e3d2e0b5cd7ffe13b896758193e52bd6c20ef96fa02d0c3cbeb054  1980  2026-09-02T15:38:42+00:00  wb_IP_PAT_NRES.csv
+4bb684fd9fd6e5a7022a41745dfe3f50811a9b14e267d295cc43653d1804d7eb  1807  2026-09-02T15:38:42+00:00  wb_IP_PAT_RESD.csv
+30765493a06c31cccd85cf8e392cef20ad3cb08af89c544e9b299e3f2e2720e8  4225  2026-09-02T15:38:42+00:00  wb_IT_NET_USER_ZS.csv
+00e1c7ac9a0c03f31fcb5f5d21811ccc2d1fa093bc87f9003f8ffb87a14c277c  6276  2026-09-02T15:38:42+00:00  wb_NY_GDP_MKTP_KD_ZG.csv
+f7c1d2d5f8531aeb18fb7b55508c01ed70f02ece36dcd86355f88b2f2d993590  6218  2026-09-02T15:38:43+00:00  wb_NY_GDP_PCAP_CD.csv
+8bb2907321a4eed91ddd44305577342061ac7b5c2d616d4f023a6f1fde793a08  2182  2026-09-02T15:38:43+00:00  wb_SP_POP_SCIE_RD_P6.csv
+da2f3bde594b2233440776224cdbbd4b240eeceb8be55a91ad684ecdb799f2ed  4129  2026-09-02T15:38:43+00:00  wb_SP_POP_TOTL.csv
+e953b36ab2c5ee0ee51b951445fb9a79e894e210d59040a7041694c474d32dde  3130  2026-09-02T15:38:43+00:00  wb_TX_VAL_TECH_CD.csv
+1ecc728157ff371dd6e4f9a2bceb4ac1de6ae9be7d18e820ca07e5a358750331  3890  2026-09-02T15:38:43+00:00  wb_TX_VAL_TECH_MF_ZS.csv
+f21c11e6c4d15a3db69ffd6e3ea774a3f32fa704bf0feed122fca5433d382078  193  2026-09-02T15:41:38+00:00  wipo/RETRIEVED.txt
+52f85b3b9afb4fd31348242b558f97a69a04d34c31b50e7524a548ff54bf889f  14886  2026-09-02T20:01:19.599154+00:00  wipo/green_ipc_technology.xlsx
+22e960827da380b13c598c87ebb92c09b80fc73d754c6d156d7de4a3415e8ce5  45518  2026-09-02T20:01:19.597103+00:00  wipo/ipc_technology.xlsx
+3c3dc10e039cd0faed74b2bf99b12c9e2d434a4c39621cb83cffc4e7572d716c  11371617  2026-09-02T15:38:42+00:00  wipo/wipo-data-patent-indicators/dc_indicator_patent_4_publication_by_technology.csv
+4987cf2278ae2f5006cda60de9ce95f98402ac43b8c289de98dbdf28c7e825c4  7328557  2026-09-02T15:38:42+00:00  wipo/wipo-data-patent-indicators/dc_indicator_patent_5_grant_by_technology.csv
+9033c368c5cb093be5ed88e39b172cdbe1bf9b86e6c055836a2c7b7978cea800  15461  2026-09-02T15:38:42+00:00  wipo/wipo-data-patent-indicators/patent_technology_field_names.xlsx
+e60659bc6abf8a595d9dac839212c15d42c43f5a64c534004810c0c2a7609ccd  4038248  2026-09-02T15:38:42+00:00  wipo/wipo-data-patent-indicators.zip
+9481fbc836356df072ed04ad8787a15bfbfeddfc9a7e74fc3a8ca37be35d0a7a  1348  2026-09-02T21:31:54.109633+00:00  wipo_families/RETRIEVED.txt
+af02a3a48aa1224d5a251e34ac792cb0e5fd7634895d399d2c1b8725ff355b4e  2480  2026-09-02T21:25:05.473809+00:00  wipo_families/wipo_patent_families.csv
+8541785cd87f7502e475b098cbb1eb365e9ad937399d593a88a3ea5ba189c724  12824  2026-09-02T22:12:07.540552+00:00  wipo_requested_plus_extra/patent_1 - Total patent applications (direct and PCT national phase entries)_Total count by applicant's origin_2000_2024.csv
+90c138a9173553dcca17e8c2707d3e59323a6aab940f65d34386a89c9d639c18  2416  2026-09-02T22:11:14.167288+00:00  wipo_requested_plus_extra/patent_10 - Resident applications per million population (by origin)_Total count by applicant's origin_2000_2024.csv
+2e0dfe72e1f3d2b9f6184faf7439755ac87a7aa27a18554bf8917938f5564fce  1772  2026-09-02T22:24:19.040743+00:00  wipo_requested_plus_extra/patent_11 - Number of examiners by office_Total count by filing office_2000_2024.csv
+6ffa87e7423edc43c29657074d32eb59cb86caf9dac16b5ff28827d5f01fd4a8  1520  2026-09-02T22:25:15.441593+00:00  wipo_requested_plus_extra/patent_12 - Average pendency from request for examination to the first office action (days)_Total count by filing office_2000_2024.csv
+01e8aee9c9cad367e52ef85578b58a632be61c1c4356ed0ae6291f49529ded86  2350  2026-09-02T22:26:02.404373+00:00  wipo_requested_plus_extra/patent_13 - Deposits of microorganism (by origin)_Total count by applicant's origin_2000_2024.csv
+15470d9589401f8232e66be3d01035975f28eb80a3d962558df3a09a634a7aa7  847  2026-09-02T22:26:37.574284+00:00  wipo_requested_plus_extra/patent_14 - Number of post-grant oppositions_Total count by filing office_2000_2024.csv
+311c1bf22f10c79793062f9a79e53c63cadb4f12c7a63c3cec59ce1c0cc4eb91  12390  2026-09-02T22:13:20.451382+00:00  wipo_requested_plus_extra/patent_1a- Direct applications_Total count by applicant's origin_2000_2024.csv
+254611593f217c099b70562198eb688fcefc1bf1aafc62d3bd790551fc828607  11151  2026-09-02T22:13:51.384495+00:00  wipo_requested_plus_extra/patent_1b- PCT national phase entries_Total count by applicant's origin_2000_2024.csv
+2245f43d2b79607f0326ef6a416f4e4d19e42a8f17efc937e92b5de58c0a3125  11408  2026-09-02T22:14:33.708648+00:00  wipo_requested_plus_extra/patent_2 - Total patent grants (direct and PCT national phase entries)_Total count by applicant's origin_2000_2024.csv
+d69dd63810f7511297d9518984b382cc40768cf9f2997cfb59257cfca9f62e14  11237  2026-09-02T22:15:16.780514+00:00  wipo_requested_plus_extra/patent_2a- Grant for direct applications_Total count by applicant's origin_2000_2024.csv
+f68b47497248a8c309b2cdd350d92507854b09fafc0c5d14abe47cf6e02c6209  10188  2026-09-02T22:15:52.021716+00:00  wipo_requested_plus_extra/patent_2b- Grant for PCT national phase entries_Total count by applicant's origin_2000_2024.csv
+eb076760793e2b28d6f03591e5c2469536fdbacce89fec82728fcda66b845e9f  12425  2026-09-02T22:16:26.211373+00:00  wipo_requested_plus_extra/patent_3 - Patents in force_Total count by applicant's origin_2000_2024.csv
+a4b1f8eeccd3f961c7370b0b7d5e64814af0b5619b36ba243fe8c20d7735c7c5  70850  2026-09-02T22:19:05.797043+00:00  wipo_requested_plus_extra/patent_4a- Patent publications by technology_Total count by applicant's origin_2000_2024.csv
+a2b805140886ff7a4c9e100deba2e5b29a0b6e9b0ab9bacaeedddddad704dd73  7589  2026-09-02T22:27:44.092736+00:00  wipo_requested_plus_extra/patent_4b- Patent publications by renewable energy_Total count by applicant's origin_2000_2024.csv
+94728456c0cd4fab02eee27ec5c192870c66e567a1df9e8cf81c8b23d4999938  1921  2026-09-02T22:19:38.805677+00:00  wipo_requested_plus_extra/patent_4c- Patent publications for AI-related technology_Total count by applicant's origin_2000_2024.csv
+de201c4b79212af049d658c0a2b56308b040993c48f7c4a1d74ffdace1c1d933  62610  2026-09-02T22:21:52.694819+00:00  wipo_requested_plus_extra/patent_5 - Patent grants by technology_Total count by applicant's origin_2000_2024.csv
+3e44c0b4f2fc9a6b7d56fccb38d5c60b1961e19ba665bf66fc5708e0a8a7c1f7  2424  2026-09-02T22:27:17.995020+00:00  wipo_requested_plus_extra/patent_6b- Patent family by origin (based on the earliest grant year)_Total count by applicant's origin_2000_2024.csv
+5a23b192edbd67a74599339daa6b3d6be8e70b690307992368fedf799f399555  2359  2026-09-02T22:08:00.425886+00:00  wipo_requested_plus_extra/patent_7 - Foreign-oriented patent family by origin_Total count by applicant's origin_2000_2024.csv
+82cbbbf610d3086a62e92fda258fba05188d065d3e9dafa3ee54e6ceda9da2d0  14855  2026-09-02T22:23:06.598467+00:00  wipo_requested_plus_extra/patent_8 - Foreign-oriented patent family by origin and destination office_Count by filing office and applicant's origin_2000_2024.csv
+62241ec36504148c5c792b87fb8cf7ebbab55f9b0d0d0df65edfb29a2c8624af  2706  2026-09-02T22:08:54.884482+00:00  wipo_requested_plus_extra/patent_9 - Resident applications per 100 billion USD GDP (2017 PPP) (by origin)_Total count by applicant's origin_2000_2024.csv
+d6d273113bb64adeddaf7fae43ebb3cb9298d9b46fabc6496307769564da4220  105  2026-09-02T15:41:38+00:00  worldbank_RETRIEVED.txt
+00bb5876391e3c78384a26a3584523f6a018c8c83d6ab81f7333bae7c1f59532  525380  2026-09-02T15:38:42+00:00  worldbank_long.csv
